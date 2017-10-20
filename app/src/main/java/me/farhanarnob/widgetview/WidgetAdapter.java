@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import static me.farhanarnob.widgetview.WidgetProvider.KEY_ITEM;
+
 /**
  * Created by ${farhanarnob} on ${06-Oct-16}.
  */
@@ -41,9 +43,9 @@ public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.list_item);
         remoteViews.setTextViewText(R.id.textView, list[i]);
-
-        remoteViews.setOnClickFillInIntent(R.id.child_list_item, new Intent());
-
+        Intent newIntent = new Intent();
+        newIntent.putExtra(KEY_ITEM, list[i]);
+        remoteViews.setOnClickFillInIntent(R.id.child_list_item, newIntent);
         return remoteViews;
     }
 

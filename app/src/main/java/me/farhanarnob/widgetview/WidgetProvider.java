@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 /**
  * Created by ${farhanarnob} on ${06-Oct-16}.
@@ -15,7 +16,20 @@ import android.widget.RemoteViews;
  */
 
 public class WidgetProvider extends AppWidgetProvider {
+    public static final String KEY_ITEM = "me.farhanarnob.widgetview.key";
+    public static final String TOAST_ACTION = "me.farhanarnob.widgetview.TOAST_ACTION";
     private static final String TAG = WidgetProvider.class.getSimpleName();
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(TOAST_ACTION)) {
+            String listItem = intent.getStringExtra(KEY_ITEM);
+            Toast.makeText(context, listItem, Toast.LENGTH_SHORT).show();
+            onUpdate(context, AppWidgetManager.getInstance(context), null);
+        }
+        // We have to call super here
+        super.onReceive(context, intent);
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -40,7 +54,7 @@ public class WidgetProvider extends AppWidgetProvider {
             remoteView.setInt(R.id.frame_layout, "setBackgroundColor", color);
 
             Intent intent = new Intent(context, WidgetProvider.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            intent.setAction(TOAST_ACTION);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, realAppWidgetIds);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
