@@ -3,6 +3,7 @@ package me.farhanarnob.widgetview;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -15,7 +16,9 @@ import android.widget.RemoteViews;
 public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        for (int id : appWidgetIds) {
+        int realAppWidgetIds[] = AppWidgetManager.getInstance(context).getAppWidgetIds(
+                new ComponentName(context, WidgetProvider.class));
+        for (int id : realAppWidgetIds) {
             RemoteViews remoteView = new RemoteViews(context.getPackageName(), R.layout.widget);
 
             int r = (int) (Math.random() * 0xff);
@@ -27,7 +30,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
             Intent intent = new Intent(context, WidgetProvider.class);
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, realAppWidgetIds);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     context,
