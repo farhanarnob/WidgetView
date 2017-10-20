@@ -26,6 +26,7 @@ public class WidgetProvider extends AppWidgetProvider {
             String listItem = intent.getStringExtra(KEY_ITEM);
             Toast.makeText(context, listItem, Toast.LENGTH_SHORT).show();
             onUpdate(context, AppWidgetManager.getInstance(context), null);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         }
         // We have to call super here
         super.onReceive(context, intent);
